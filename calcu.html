@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>calcu</title>
+    <link rel="stylesheet" href="calcu.css">
+</head>
+<body>
+    <div class="calculator">
+        <div class="display" id="display">0</div>
+        <div class="buttons">
+            <button class="button clear" onclick="clearDisplay()">C</button>
+            <button class="button delete" onclick="deleteLast()">⌫</button>
+            <button class="button operator" onclick="appendOperator(':')">:</button>
+            <button class="button operator" onclick="appendOperator('x')">x</button>
+            <button class="button operator" onclick="appendOperator('-')">-</button>
+            <button class="button" onclick="appendNumber('7')">7</button>
+            <button class="button" onclick="appendNumber('8')">8</button>
+            <button class="button" onclick="appendNumber('9')">9</button>
+            <button class="button operator" onclick="appendOperator('+')">+</button>
+            <button class="button" onclick="appendNumber('4')">4</button>
+            <button class="button" onclick="appendNumber('5')">5</button>
+            <button class="button" onclick="appendNumber('6')">6</button>
+            
+            <button class="button" onclick="appendNumber('0')">0</button>
+            <button class="button" onclick="appendNumber('1')">1</button>
+            <button class="button" onclick="appendNumber('2')">2</button>
+            
+           
+            <button class="button" onclick="appendNumber('3')">3</button>
+           
+           
+            <button class="button equal" onclick="calculate()">=</button>
+        </div>
+    </div>
+
+    <script>
+        let display = document.getElementById('display');
+        let currentInput = '';
+        let operator = '';
+        let result = 0;
+
+        function clearDisplay() {
+            currentInput = '';
+            operator = '';
+            result = 0;
+            display.innerText = '0';
+        }
+
+        function appendNumber(number) {
+            if (currentInput === '0' && number !== '.') {
+                currentInput = number;
+            } else {
+                currentInput += number;
+            }
+            display.innerText = currentInput;
+        }
+       
+        function deleteLast() {
+            currentInput = currentInput.slice(0, -1);
+            display.innerText = currentInput || '0';
+        }
+
+        function appendOperator(op) {
+            if (currentInput !== '') {
+                if (operator === '') {
+                    result = parseFloat(currentInput);
+                } else {
+                    result = calculateResult(result, parseFloat(currentInput), operator);
+                }
+                operator = op;
+                currentInput = '';
+                display.innerText = op;
+            }
+        }
+
+        function calculate() {
+            if (currentInput !== '' && operator !== '') {
+                result = calculateResult(result, parseFloat(currentInput), operator);
+                display.innerText = result;
+                currentInput = result.toString();
+                operator = '';
+            }
+        }
+
+        function calculateResult(num1, num2, operator) {
+            switch (operator) {
+                case '+':
+                    return num1 + num2;
+                case '-':
+                    return num1 - num2;
+                case 'x':
+                    return num1 * num2;
+                case ':':
+                    return num1 / num2;
+                default:
+                    return num2;
+            }
+        }
+    </script>
+</body>
+</html>
